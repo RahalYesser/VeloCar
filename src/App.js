@@ -20,9 +20,12 @@ import Landing from "./views/Landing.js";
 import Login from "./views/auth/Login.js";
 import Register from "./views/auth/Register.js";
 import Profile from "./views/Profile.js";
+import New from './views/New.js';
+import Used from './views/Used.js'
 import Admin from './layouts/Admin.js';
 import Auth from "./layouts/Auth.js";
 import Tables from "./views/admin/Tables.js";
+import Index from './views/Index';
 
 
 function App() {
@@ -42,6 +45,8 @@ function App() {
       {/* Routes */}
       <Routes>
         <Route path="/" element={<Landing />} />
+        <Route path="/new" element={<New />} />
+        <Route path="/used" element={<Used />} />
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/register" element={<Register />} />
         <Route path="/auth" element={<Auth/>} />
@@ -53,7 +58,7 @@ function App() {
         <Route path="/feedback" element={<FeedbackPage />} />
         <Route path="/admin-feedbacks" element={<AdminFeedbackPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/home" element={<Landing/>} />
+        <Route path="/home" element={<Index/>} />
         <Route path="/admin" element={<Admin/>} />
         <Route path="/admin/tables" element={<Tables />} />
         
