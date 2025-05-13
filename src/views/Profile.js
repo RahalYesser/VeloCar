@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Navbar from "../components/Navbars/AuthNavbar.js";
 import Footer from "../components/Footers/Footer.js";
@@ -6,6 +7,63 @@ import Footer from "../components/Footers/Footer.js";
 import car_profile from '../assets/img/car_profile.jpg';
 
 export default function Profile() {
+  const defaultProfileImage = require("../assets/img/pdp.jpg").default;
+  const [userName, setUserName] = useState("");
+  const [profileImage, setProfileImage] = useState(defaultProfileImage);
+  const [isHovering, setIsHovering] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    try {
+      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      if (currentUser && currentUser.name) {
+        setUserName(currentUser.name);
+        // If user has a saved profile image and it's valid
+        if (currentUser.profileImage) {
+          const img = new Image();
+          img.onerror = () => setProfileImage(defaultProfileImage); // Fallback to default if error
+          img.src = currentUser.profileImage;
+          if (img.complete) {
+            setProfileImage(currentUser.profileImage);
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error reading user data from localStorage:", error);
+      setProfileImage(defaultProfileImage); // Fallback to default if error
+    }
+  }, []);
+
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        try {
+          setProfileImage(reader.result);
+          const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+          if (currentUser) {
+            currentUser.profileImage = reader.result;
+            localStorage.setItem("currentUser", JSON.stringify(currentUser));
+          }
+        } catch (error) {
+          console.error("Error saving profile image:", error);
+          setProfileImage(defaultProfileImage); // Fallback to default if error
+        }
+      };
+      reader.onerror = () => {
+        console.error("Error reading file:", file.name);
+        setProfileImage(defaultProfileImage); // Fallback to default if error
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("currentUser");
+    navigate("/");
+  };
+
   return (
     <>
       <Navbar transparent />
@@ -48,11 +106,30 @@ export default function Profile() {
               <div className="px-6">
                 <div className="flex flex-wrap justify-center">
                   <div className="w-full lg:w-3/12 px-4 lg:order-2 flex justify-center">
-                    <div className="relative">
+                    <div 
+                      className="relative"
+                      onMouseEnter={() => setIsHovering(true)}
+                      onMouseLeave={() => setIsHovering(false)}
+                    >
                       <img
-                        alt="..."
-                        src={require("../assets/img/team-2-800x800.jpg").default}
-                        className="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px"
+                        alt="profile picture"
+                        src={profileImage}
+                        className="shadow-xl rounded-full h-40 w-40 object-cover align-middle border-none absolute -m-16 -ml-20 lg:-ml-16"
+                      />
+                      <label 
+                        htmlFor="profile-image-upload"
+                        className={`absolute inset-0 w-40 h-40 rounded-full -m-16 -ml-20 lg:-ml-16 flex items-center justify-center bg-black bg-opacity-50 cursor-pointer transition-opacity duration-200 ${
+                          isHovering ? 'opacity-100' : 'opacity-0'
+                        }`}
+                      >
+                        <span className="text-white text-sm">Change Photo</span>
+                      </label>
+                      <input
+                        type="file"
+                        id="profile-image-upload"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="hidden"
                       />
                     </div>
                   </div>
@@ -97,7 +174,7 @@ export default function Profile() {
                 </div>
                 <div className="text-center mt-12">
                   <h3 className="text-4xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
-                    Jenna Stones
+                    {userName}
                   </h3>
                   <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
                     <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>{" "}
@@ -110,6 +187,14 @@ export default function Profile() {
                   <div className="mb-2 text-blueGray-600">
                     <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>
                     University of Computer Science
+                  </div>
+                  <div className="mt-6">
+                    <button
+                      onClick={handleLogout}
+                      className="bg-red-500 text-white font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150"
+                    >
+                      Logout
+                    </button>
                   </div>
                 </div>
                 <div className="mt-10 py-10 border-t border-blueGray-200 text-center">
