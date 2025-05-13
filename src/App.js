@@ -21,7 +21,8 @@ import Login from "./views/auth/Login.js";
 import Register from "./views/auth/Register.js";
 import Profile from "./views/Profile.js";
 import New from './views/New.js';
-import Used from './views/Used.js'
+import Used from './views/Used.js';
+import Forum from './views/Forum.js'
 import Admin from './layouts/Admin.js';
 import Auth from "./layouts/Auth.js";
 import Tables from "./views/admin/Tables.js";
@@ -47,6 +48,7 @@ function App() {
         <Route path="/" element={<Landing />} />
         <Route path="/new" element={<New />} />
         <Route path="/used" element={<Used />} />
+        <Route path="/forum" element={<Forum />} />
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/register" element={<Register />} />
         <Route path="/auth" element={<Auth/>} />
