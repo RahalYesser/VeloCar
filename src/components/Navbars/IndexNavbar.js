@@ -17,7 +17,7 @@ export default function Navbar(props) {
               <img
                 alt="velocar"
                 src={require("./../../assets/img/logo.png")}
-                className="h-28 w-auto"
+                className="h-20 w-auto"
               />
             </Link>
             <button
@@ -50,7 +50,7 @@ export default function Navbar(props) {
               <li className="flex items-center">
                 <Link
                   to="/new"
-                  className={`px-3 py-4 lg:py-2 flex items-center text-xl uppercase font-bold ${
+                  className={`px-3 py-4 lg:py-2 flex items-center text-base uppercase font-bold ${
                     location.pathname === "/new"
                       ? "text-red-500"
                       : "text-white hover:text-red-500"
@@ -63,7 +63,7 @@ export default function Navbar(props) {
               <li className="flex items-center">
                 <Link
                   to="/used"
-                  className={`px-3 py-4 lg:py-2 flex items-center text-xl uppercase font-bold ${
+                  className={`px-3 py-4 lg:py-2 flex items-center text-base uppercase font-bold ${
                     location.pathname === "/used"
                       ? "text-red-500"
                       : "text-white hover:text-red-500"
@@ -73,9 +73,21 @@ export default function Navbar(props) {
                 </Link>
               </li>
               <li className="flex items-center">
-                <IndexDropdown />
+                <Link
+                  to="/forum"
+                  className={`px-3 py-4 lg:py-2 flex items-center text-base uppercase font-bold ${
+                    location.pathname === "/forum"
+                      ? "text-red-500"
+                      : "text-white hover:text-red-500"
+                  }`}
+                >
+                  Forum
+                </Link>
               </li>
               <li className="flex items-center">
+                <IndexDropdown />
+              </li>
+             {/*  <li className="flex items-center">
                 <a
                   className="hover:text-blueGray-500 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
                   href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdemos.creative-tim.com%2Fnotus-react%2F%23%2F"
@@ -106,7 +118,7 @@ export default function Navbar(props) {
                   <i className="text-blueGray-400 fab fa-github text-lg leading-lg " />
                   <span className="lg:hidden inline-block ml-2">Star</span>
                 </a>
-              </li>
+              </li> */}
 
               <li className="flex items-center">
                 <Link to="/auth/login">

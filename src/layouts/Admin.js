@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate , Outlet} from "react-router-dom";
 
 // components
 import AdminNavbar from "../components/Navbars/AdminNavbar.js";
@@ -10,6 +10,7 @@ import FooterAdmin from "../components/Footers/FooterAdmin.js";
 // views
 import Dashboard from "../views/admin/Dashboard.js";
 import Maps from "../views/admin/Maps.js";
+import Forum from "../views/admin/Forum.js";
 //import Settings from "../views/admin/Settings.js";
 import Tables from "../views/admin/Tables.js";
 
@@ -22,13 +23,7 @@ export default function Admin() {
         {/* Header */}
         <HeaderStats />
         <div className="px-4 md:px-10 mx-auto w-full -m-24">
-          <Routes>
-            <Route path="/admin/dashboard" element={<Dashboard />} />
-            <Route path="/admin/maps" element={<Maps />} />
-            {/*<Route path="/admin/settings" element={<Settings />} />*/}
-            <Route path="/admin/tables" element={<Tables />} />
-            <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
-          </Routes>
+          <Outlet />
           <FooterAdmin />
         </div>
       </div>
