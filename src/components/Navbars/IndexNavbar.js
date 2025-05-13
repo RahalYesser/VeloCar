@@ -17,7 +17,7 @@ export default function Navbar(props) {
               <img
                 alt="velocar"
                 src={require("./../../assets/img/logo.png")}
-                className="h-28 w-auto"
+                className="h-20 w-auto"
               />
             </Link>
             <button
@@ -50,7 +50,7 @@ export default function Navbar(props) {
               <li className="flex items-center">
                 <Link
                   to="/new"
-                  className={`px-3 py-4 lg:py-2 flex items-center text-xl uppercase font-bold ${
+                  className={`px-3 py-4 lg:py-2 flex items-center text-base uppercase font-bold ${
                     location.pathname === "/new"
                       ? "text-red-500"
                       : "text-white hover:text-red-500"
@@ -63,7 +63,7 @@ export default function Navbar(props) {
               <li className="flex items-center">
                 <Link
                   to="/used"
-                  className={`px-3 py-4 lg:py-2 flex items-center text-xl uppercase font-bold ${
+                  className={`px-3 py-4 lg:py-2 flex items-center text-base uppercase font-bold ${
                     location.pathname === "/used"
                       ? "text-red-500"
                       : "text-white hover:text-red-500"
@@ -75,7 +75,7 @@ export default function Navbar(props) {
               <li className="flex items-center">
                 <Link
                   to="/forum"
-                  className={`px-3 py-4 lg:py-2 flex items-center text-xl uppercase font-bold ${
+                  className={`px-3 py-4 lg:py-2 flex items-center text-base uppercase font-bold ${
                     location.pathname === "/forum"
                       ? "text-red-500"
                       : "text-white hover:text-red-500"

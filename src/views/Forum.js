@@ -77,7 +77,7 @@ export default function Forum() {
   return (
     <>
       <IndexNavbar fixed />
-      <div className="max-w-6xl my-32 mx-auto p-6 text-white ">
+      <div className="max-w-6xl my-24 mx-auto p-6 text-white ">
         <div className="p-6 max-w-6xl mx-auto text-gray-800">
           <h2 className="text-2xl font-bold text-center mb-1">
             COMMUNITY FORUM

@@ -42,7 +42,7 @@ export default function Used() {
   return (
     <>
       <IndexNavbar fixed />
-      <main className="mt-32">
+      <main className="mt-24">
         <div className="bg-black text-white p-4">
           <CarFilterPanel onSearch={handleFilter} isUsedPage={true} />
         </div>

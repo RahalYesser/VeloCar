@@ -1,9 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-
 //import CardCategoriesFilter from "../components/Cards/CardCategoriesFilter.js";
-
 
 // components
 
@@ -16,15 +14,28 @@ import CarBrandCard from "../components/Cards/CardCarBrands.js";
 import cars from "../assets/img/cars.jpg";
 
 export default function Landing() {
-  const handleCategorySelect = (category) => {
-    console.log("Selected Category:", category.name);
-    // Filter cars by category or update a state
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    message: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const contacts = JSON.parse(localStorage.getItem("contacts")) || [];
+    localStorage.setItem("contacts", JSON.stringify([formData, ...contacts]));
+    alert("Message send !");
+    setFormData({ fullName: "", email: "", message: "" });
   };
   return (
     <>
       <IndexNavbar fixed />
       <main>
-        <div className="relative mt-32 pt-16 pb-32 flex content-center items-center justify-center min-h-screen-75">
+        <div className="relative mt-24 pt-16 pb-32 flex content-center items-center justify-center min-h-screen-75">
           <div
             className="absolute top-0 w-full h-full bg-center bg-cover"
             style={{
@@ -40,9 +51,9 @@ export default function Landing() {
             <div className="items-center flex flex-wrap">
               <div className="w-full lg:w-6/12 px-4 ml-auto mr-auto text-center">
                 <div className="pr-12">
-                  <h1 className="text-white font-semibold text-5xl">
+                 {/*  <h1 className="text-white font-semibold text-5xl">
                     Your story starts with us.
-                  </h1>
+                  </h1> */}
                   {/* <p className="mt-4 text-lg text-blueGray-200">
                     This is a simple example of a Landing Page you can build
                     using Notus React. It features multiple CSS components based
@@ -72,11 +83,11 @@ export default function Landing() {
             </svg>
           </div>
         </div>
-        <section className="pb-20 bg-blueGray-200 -mt-24">
+        <section className="pb-20 -mt-24">
           <div className="container mx-auto px-4">
             <div className="flex flex-wrap">
-              <div className="lg:pt-12 pt-6 w-full md:w-4/12 px-4 text-center">
-                <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
+              <div className="lg:pt-12 pt-6 w-full md:w-4/12 text-white px-4 text-center">
+                <div className="relative flex flex-col min-w-0 break-words bg-gray-900 w-full mb-8 shadow-lg rounded-lg">
                   <div className="px-4 py-5 flex-auto">
                     <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-red-400">
                       <i className="fas fa-award"></i>
@@ -90,8 +101,8 @@ export default function Landing() {
                 </div>
               </div>
 
-              <div className="w-full md:w-4/12 px-4 text-center">
-                <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
+              <div className="w-full md:w-4/12 px-4 text-center text-white">
+                <div className="relative flex flex-col min-w-0 break-words bg-gray-900 w-full mb-8 shadow-lg rounded-lg">
                   <div className="px-4 py-5 flex-auto">
                     <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-lightBlue-400">
                       <i className="fas fa-retweet"></i>
@@ -105,8 +116,8 @@ export default function Landing() {
                 </div>
               </div>
 
-              <div className="pt-6 w-full md:w-4/12 px-4 text-center">
-                <div className="relative flex flex-col min-w-0 break-words bg-white w-full mb-8 shadow-lg rounded-lg">
+              <div className="pt-6 w-full md:w-4/12 px-4 text-center text-white">
+                <div className="relative flex flex-col min-w-0 break-words bg-gray-900 opacity-2 w-full mb-8 shadow-lg rounded-lg">
                   <div className="px-4 py-5 flex-auto">
                     <div className="text-white p-3 text-center inline-flex items-center justify-center w-12 h-12 mb-5 shadow-lg rounded-full bg-emerald-400">
                       <i className="fas fa-fingerprint"></i>
@@ -179,8 +190,6 @@ export default function Landing() {
           </div>
         </section>
 
-      
-
         <section className="pt-20 pb-48">
           <div className="container mx-auto px-4">
             <div className="flex flex-wrap justify-center text-center mb-24">
@@ -233,8 +242,8 @@ export default function Landing() {
                   Find Your Perfect Car
                 </h2>
                 <p className="text-lg leading-relaxed mt-4 mb-4 text-blueGray-400">
-                  Explore our wide range of new and used vehicles. 
-                  Easily find the car that fits your lifestyle and budget.
+                  Explore our wide range of new and used vehicles. Easily find
+                  the car that fits your lifestyle and budget.
                 </p>
               </div>
             </div>
@@ -244,11 +253,12 @@ export default function Landing() {
                   <i className="fas fa-medal text-xl"></i>
                 </div>
                 <h6 className="text-xl mt-5 font-semibold text-white">
-                 ⭐ Excellent Services
+                  ⭐ Excellent Services
                 </h6>
                 <p className="mt-2 mb-4 text-blueGray-400">
-                  We provide trusted support, flexible financing, 
-                  and professional guidance to make your car buying experience seamless.
+                  We provide trusted support, flexible financing, and
+                  professional guidance to make your car buying experience
+                  seamless.
                 </p>
               </div>
               <div className="w-full lg:w-3/12 px-4 text-center">
@@ -259,10 +269,8 @@ export default function Landing() {
                   📈 Grow Your Lifestyle
                 </h5>
                 <p className="mt-2 mb-4 text-blueGray-400">
-                  Upgrade your drive with high-performance models, reliable brands, 
-                  and the latest automotive technology.
-
-
+                  Upgrade your drive with high-performance models, reliable
+                  brands, and the latest automotive technology.
                 </p>
               </div>
               <div className="w-full lg:w-3/12 px-4 text-center">
@@ -273,10 +281,8 @@ export default function Landing() {
                   🚀 Launch Time
                 </h5>
                 <p className="mt-2 mb-4 text-blueGray-400">
-                  Ready to drive? Get behind the wheel today with our fast and 
+                  Ready to drive? Get behind the wheel today with our fast and
                   easy purchase or leasing process.
-
-
                 </p>
               </div>
             </div>
@@ -292,59 +298,64 @@ export default function Landing() {
                       📞 Get in Touch with Us
                     </h4>
                     <p className="leading-relaxed mt-1 mb-4 text-blueGray-500">
-                      Fill out the form below, and our team will reach 
-                      out to you within 24 hours to assist with your inquiries.
+                      Fill out the form below, and our team will reach out to
+                      you within 24 hours to assist with your inquiries.
                     </p>
-                    <div className="relative w-full mb-3 mt-8">
-                      <label
-                        className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                        htmlFor="full-name"
-                      >
-                        Full Name
-                      </label>
-                      <input
-                        type="text"
-                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                        placeholder="Full Name"
-                      />
-                    </div>
+                    <form onSubmit={handleSubmit}>
+                      <div className="relative w-full mb-3 mt-8">
+                        <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                          Full Name
+                        </label>
+                        <input
+                          type="text"
+                          name="fullName"
+                          value={formData.fullName}
+                          onChange={handleChange}
+                          required
+                          className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                          placeholder="Full Name"
+                        />
+                      </div>
 
-                    <div className="relative w-full mb-3">
-                      <label
-                        className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                        htmlFor="email"
-                      >
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                        placeholder="Email"
-                      />
-                    </div>
+                      <div className="relative w-full mb-3">
+                        <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                          Email
+                        </label>
+                        <input
+                          type="email"
+                          name="email"
+                          value={formData.email}
+                          onChange={handleChange}
+                          required
+                          className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                          placeholder="Email"
+                        />
+                      </div>
 
-                    <div className="relative w-full mb-3">
-                      <label
-                        className="block uppercase text-blueGray-600 text-xs font-bold mb-2"
-                        htmlFor="message"
-                      >
-                        Message
-                      </label>
-                      <textarea
-                        rows="4"
-                        cols="80"
-                        className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
-                        placeholder="Type a message..."
-                      />
-                    </div>
-                    <div className="text-center mt-6">
-                      <button
-                        className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                        type="button"
-                      >
-                        Send Message
-                      </button>
-                    </div>
+                      <div className="relative w-full mb-3">
+                        <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
+                          Message
+                        </label>
+                        <textarea
+                          name="message"
+                          rows="4"
+                          value={formData.message}
+                          onChange={handleChange}
+                          required
+                          className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
+                          placeholder="Type a message..."
+                        />
+                      </div>
+
+                      <div className="text-center mt-6">
+                        <button
+                          type="submit"
+                          className="bg-blueGray-800 text-white active:bg-blueGray-600 text-sm font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150"
+                        >
+                          Send Message
+                        </button>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>

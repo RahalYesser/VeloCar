@@ -1,6 +1,12 @@
-import React from 'react';
-import './index.css';
-import { BrowserRouter as Router, Route, Routes, Link,Navigate } from 'react-router-dom';
+import React from "react";
+import "./index.css";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Link,
+  Navigate,
+} from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./assets/styles/tailwind.css";
 
@@ -10,24 +16,27 @@ import "./assets/styles/tailwind.css";
 //import Profile from './pages/Profile';
 
 // Nouvelles pages
-import ContactPage from './pages/ContactPage';
-import AdminPage from './pages/AdminPage';
-import FeedbackPage from './pages/FeedbackPage';
-import AdminFeedbackPage from './pages/AdminFeedbackPage';
-import Dashboard from './views/Index';
+import ContactPage from "./pages/ContactPage";
+import AdminPage from "./pages/AdminPage";
+import FeedbackPage from "./pages/FeedbackPage";
+import AdminFeedbackPage from "./pages/AdminFeedbackPage";
+//import Dashboard from "./views/Index";
 import Landing from "./views/Landing.js";
 // views
 import Login from "./views/auth/Login.js";
 import Register from "./views/auth/Register.js";
 import Profile from "./views/Profile.js";
-import New from './views/New.js';
-import Used from './views/Used.js';
-import Forum from './views/Forum.js'
-import Admin from './layouts/Admin.js';
+import New from "./views/New.js";
+import Used from "./views/Used.js";
+import Forum from "./views/Forum.js";
+import Admin from "./layouts/Admin.js";
 import Auth from "./layouts/Auth.js";
+import Index from "./views/Index";
+import Dashboard from "./views/admin/Dashboard.js";
+import Contacts from "./views/admin/Contacts.js";
+import AdminForum from "./views/admin/Forum.js";
+import Settings from "./views/admin/Settings.js";
 import Tables from "./views/admin/Tables.js";
-import Index from './views/Index';
-
 
 function App() {
   return (
@@ -51,19 +60,28 @@ function App() {
         <Route path="/forum" element={<Forum />} />
         <Route path="/auth/login" element={<Login />} />
         <Route path="/auth/register" element={<Register />} />
-        <Route path="/auth" element={<Auth/>} />
+        <Route path="/auth" element={<Auth />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/admin" element={<Admin />}>
+          <Route index element={<Navigate to="/admin/dashboard" replace />} />
+          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="settings" element={<Settings />} />
+          <Route path="forum" element={<AdminForum />} />
+          <Route path="contacts" element={<Contacts />} />
+          <Route path="tables" element={<Tables />} />
+        </Route>
+
+        
         <Route path="/contact" element={<ContactPage />} />
         {/*<Route path="/admin" element={<AdminPage />} />*/}
-        <Route path="*" element={<Login />} />
         <Route path="/feedback" element={<FeedbackPage />} />
         <Route path="/admin-feedbacks" element={<AdminFeedbackPage />} />
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/home" element={<Index/>} />
-        <Route path="/admin" element={<Admin/>} />
-        <Route path="/admin/tables" element={<Tables />} />
-        
+        <Route path="/home" element={<Index />} />
+
+        {/*         <Route path="/admin/forum" element={<AdminForum/>} />
+        <Route path="/admin/tables" element={<Tables />} />*/}
       </Routes>
     </Router>
   );
