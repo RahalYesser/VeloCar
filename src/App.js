@@ -26,9 +26,10 @@ import Car from "./views/Car.js";
 import AdminForum from "./views/admin/Forum.js";
 import Settings from "./views/admin/Settings.js";
 import Orders from "./views/admin/Orders.js";
+import AdminCategories from "./views/admin/Categories.js";
 
 function App() {
-    useEffect(() => {
+  useEffect(() => {
     // Remove currentUser from localStorage when the window is closed
     const handleUnload = () => {
       localStorage.removeItem("currentUser");
@@ -63,9 +64,10 @@ function App() {
           <Route path="feedbacks" element={<Feedbacks />} />
           <Route path="orders" element={<Orders />} />
           <Route path="contacts" element={<Contacts />} />
+          <Route path="carsCategories" element={<AdminCategories />} />
+
           <Route path="cars" element={<Cars />} />
         </Route>
-
       </Routes>
     </Router>
   );

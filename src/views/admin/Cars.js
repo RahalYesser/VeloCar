@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";  // Import Link
+import { Link } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-
 import CarCard from "../../components/Cards/CardCar";
 
 const AdminCars = () => {
@@ -14,28 +13,34 @@ const AdminCars = () => {
     type: "",
     price: 0,
     kilometrage: "",
+    image: ""
   });
   const [editing, setEditing] = useState(false);
   const [categories, setCategories] = useState({ marques: [], models: {} });
 
-  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const carsPerPage = 5; // Number of cars per page
+  const carsPerPage = 5;
 
   useEffect(() => {
     const storedCars = JSON.parse(localStorage.getItem("cars")) || [];
     setCars(storedCars);
-    const storedCategories = JSON.parse(localStorage.getItem("carCategories"));
-    if (storedCategories) {
-      setCategories(storedCategories);
-    }
+
+    const rawCategories = JSON.parse(localStorage.getItem("carCategories")) || [];
+
+    const formattedCategories = {
+      marques: rawCategories.map((c) => c.marque),
+      models: rawCategories.reduce((acc, c) => {
+        acc[c.marque] = c.models;
+        return acc;
+      }, {}),
+    };
+
+    setCategories(formattedCategories);
   }, []);
 
-  // Calculate current cars to display based on page number
   const indexOfLastCar = currentPage * carsPerPage;
   const indexOfFirstCar = indexOfLastCar - carsPerPage;
   const currentCars = cars.slice(indexOfFirstCar, indexOfLastCar);
-
   const totalPages = Math.ceil(cars.length / carsPerPage);
 
   const handleChange = (e) => {
@@ -79,6 +84,7 @@ const AdminCars = () => {
       type: "",
       price: 0,
       kilometrage: "",
+      image: ""
     });
     setEditing(false);
   };
@@ -138,6 +144,7 @@ const AdminCars = () => {
                 </option>
               ))}
             </select>
+
             <select
               required
               name="model"
@@ -153,6 +160,7 @@ const AdminCars = () => {
                 </option>
               ))}
             </select>
+
             <input
               required
               name="type"
@@ -161,6 +169,7 @@ const AdminCars = () => {
               placeholder="Type"
               className="p-2 rounded border border-gray-300 text-sm"
             />
+
             <input
               required
               type="number"
@@ -170,6 +179,7 @@ const AdminCars = () => {
               placeholder="Price"
               className="p-2 rounded border border-gray-300 text-sm"
             />
+
             <select
               required
               name="isNew"
@@ -185,6 +195,7 @@ const AdminCars = () => {
               <option value="true">New</option>
               <option value="false">Used</option>
             </select>
+
             {!carData.isNew && (
               <input
                 required
@@ -197,6 +208,7 @@ const AdminCars = () => {
               />
             )}
           </div>
+
           <div className="flex gap-2">
             <button
               onClick={handleSave}
@@ -241,7 +253,7 @@ const AdminCars = () => {
                   </td>
                   <td className="px-6 py-3 space-x-2">
                     <Link
-                      to={`/car/${car.id}`} // Link to car details page
+                      to={`/car/${car.id}`}
                       className="bg-indigo-500 text-white px-3 py-1 rounded text-xs shadow hover:bg-indigo-600"
                     >
                       View Details
@@ -263,10 +275,7 @@ const AdminCars = () => {
               ))}
               {cars.length === 0 && (
                 <tr>
-                  <td
-                    colSpan="7"
-                    className="text-center py-4 text-blueGray-400"
-                  >
+                  <td colSpan="7" className="text-center py-4 text-blueGray-400">
                     No cars found.
                   </td>
                 </tr>
@@ -296,6 +305,7 @@ const AdminCars = () => {
           </button>
         </div>
 
+        {/* Car cards below table */}
         <div className="flex flex-wrap justify-center bg-blueGray-200 text-center mt-4">
           <div className="w-full">
             <div className="p-6 max-w-6xl mx-auto">
