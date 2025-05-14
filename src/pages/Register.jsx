@@ -79,73 +79,87 @@ const Register = () => {
   };
 
   return (
-    <div className="register-page flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h1 className="text-3xl font-bold mb-6">Register</h1>
-      <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md w-full max-w-sm">
-        <div className="mb-4">
-          <label htmlFor="name" className="block text-sm font-medium mb-2">Name:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className={`w-full p-2 border rounded ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
-          />
-          {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
-        </div>
+    <div 
+      className="register-page relative flex items-center justify-center min-h-screen bg-cover bg-center overflow-hidden" 
+      style={{ backgroundImage: "url('/assets/register-background.jpg')" }}
+    >
+      <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+      <div 
+        className="relative bg-white p-8 rounded-lg shadow-2xl w-full max-w-md"
+      >
+        <h1 className="text-4xl font-extrabold text-center text-gray-800 mb-4">
+          Create Account
+        </h1>
+        <p className="text-center text-gray-600 mb-6">
+          Join us and start your journey
+        </p>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="mb-4">
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">Name:</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
+            />
+            {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+          </div>
 
-        <div className="mb-4">
-          <label htmlFor="email" className="block text-sm font-medium mb-2">Email:</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className={`w-full p-2 border rounded ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
-          />
-          {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
-        </div>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">Email:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
+            />
+            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+          </div>
 
-        <div className="mb-4">
-          <label htmlFor="password" className="block text-sm font-medium mb-2">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            className={`w-full p-2 border rounded ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
-          />
-          {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
-        </div>
+          <div className="mb-4">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">Password:</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 ${errors.password ? 'border-red-500' : 'border-gray-300'}`}
+            />
+            {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+          </div>
 
-        <div className="mb-4">
-          <label htmlFor="confirmPassword" className="block text-sm font-medium mb-2">Confirm Password:</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            className={`w-full p-2 border rounded ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'}`}
-          />
-          {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>}
-        </div>
+          <div className="mb-4">
+            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">Confirm Password:</label>
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              className={`w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'}`}
+            />
+            {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>}
+          </div>
 
-        {apiError && <p className="text-red-500 text-sm mb-4">{apiError}</p>}
+          {apiError && <p className="text-red-500 text-sm mb-4">{apiError}</p>}
 
-        <button
-          type="submit"
-          className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 transition-colors"
-        >
-          Register
-        </button>
-      </form>
-      <p className="mt-4 text-sm">
-        Already have an account? <a href="/login" className="text-blue-500 hover:underline">Login here</a>
-      </p>
+          <button
+            type="submit"
+            className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white py-3 rounded-lg font-semibold shadow-lg hover:from-green-600 hover:to-green-700 transition-all"
+          >
+            Register
+          </button>
+        </form>
+        <p className="mt-6 text-sm text-center text-gray-600">
+          Already have an account?{' '}
+          <a href="/login" className="text-blue-500 hover:underline">Login here</a>
+        </p>
+      </div>
     </div>
   );
 };

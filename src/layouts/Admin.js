@@ -13,6 +13,7 @@ import Maps from "../views/admin/Maps.js";
 import Forum from "../views/admin/Forum.js";
 //import Settings from "../views/admin/Settings.js";
 import Tables from "../views/admin/Tables.js";
+import Users from "../views/admin/Users.js";
 
 export default function Admin() {
   return (

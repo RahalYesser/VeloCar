@@ -256,7 +256,26 @@ export default function Sidebar() {
                 </Link>
         
               </li>
-            
+                          <li className="items-center">
+                <Link
+                  className={`text-xs uppercase py-3 font-bold block ${
+                    isActive("/admin/users")
+                      ? "text-lightBlue-500 hover:text-lightBlue-600"
+                      : "text-blueGray-700 hover:text-blueGray-500"
+                  }`}
+                  to="/admin/users"
+                >
+                  <i
+                    className={`fa-solid fa-address-book mr-2 text-sm ${
+                      isActive("/admin/users")
+                        ? "opacity-75"
+                        : "text-blueGray-300"
+                    }`}
+                  ></i>
+                  Users
+                </Link>
+        
+              </li>
             </ul>
 
             {/* Divider */}

@@ -22,20 +22,27 @@ const AdminCars = () => {
   const carsPerPage = 5;
 
   useEffect(() => {
+    // Load cars
     const storedCars = JSON.parse(localStorage.getItem("cars")) || [];
     setCars(storedCars);
 
-    const rawCategories = JSON.parse(localStorage.getItem("carCategories")) || [];
-
-    const formattedCategories = {
-      marques: rawCategories.map((c) => c.marque),
-      models: rawCategories.reduce((acc, c) => {
-        acc[c.marque] = c.models;
-        return acc;
-      }, {}),
-    };
-
-    setCategories(formattedCategories);
+    try {
+      // Load categories from localStorage
+      const storedCategories = JSON.parse(localStorage.getItem("carCategories"));
+      
+      if (storedCategories && storedCategories.marques && storedCategories.models) {
+        setCategories({
+          marques: storedCategories.marques,
+          models: storedCategories.models
+        });
+      } else {
+        console.error("Invalid categories format in localStorage");
+        setCategories({ marques: [], models: {} });
+      }
+    } catch (error) {
+      console.error("Error loading categories:", error);
+      setCategories({ marques: [], models: {} });
+    }
   }, []);
 
   const indexOfLastCar = currentPage * carsPerPage;
