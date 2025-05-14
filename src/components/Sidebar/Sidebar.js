@@ -137,7 +137,7 @@ export default function Sidebar() {
                 </Link>
               </li>
 
-              <li className="items-center">
+              {/* <li className="items-center">
                 <Link
                   className={`text-xs uppercase py-3 font-bold block ${
                     isActive("/admin/tables")
@@ -155,7 +155,7 @@ export default function Sidebar() {
                   ></i>
                   Tables
                 </Link>
-              </li>
+              </li> */}
 
               <li className="items-center">
                 <Link
@@ -198,6 +198,26 @@ export default function Sidebar() {
               <li className="items-center">
                 <Link
                   className={`text-xs uppercase py-3 font-bold block ${
+                    isActive("/admin/feedbacks")
+                      ? "text-lightBlue-500 hover:text-lightBlue-600"
+                      : "text-blueGray-700 hover:text-blueGray-500"
+                  }`}
+                  to="/admin/feedbacks"
+                >
+                  <i
+                    className={`fa-solid fa-comments mr-2 text-sm ${
+                      isActive("/admin/feedbacks")
+                        ? "opacity-75"
+                        : "text-blueGray-300"
+                    }`}
+                  ></i>
+                  Cars feedbacks
+                </Link>
+        
+              </li>
+              <li className="items-center">
+                <Link
+                  className={`text-xs uppercase py-3 font-bold block ${
                     isActive("/admin/orders")
                       ? "text-lightBlue-500 hover:text-lightBlue-600"
                       : "text-blueGray-700 hover:text-blueGray-500"
@@ -232,7 +252,9 @@ export default function Sidebar() {
                   ></i>
                   Contacts
                 </Link>
+        
               </li>
+            
             </ul>
 
             {/* Divider */}
