@@ -11,17 +11,35 @@ export default function Profile() {
   const [userName, setUserName] = useState("");
   const [profileImage, setProfileImage] = useState(defaultProfileImage);
   const [isHovering, setIsHovering] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editForm, setEditForm] = useState({
+    name: "",
+    location: "",
+    work: "",
+    age: "",
+    description: ""
+  });
   const navigate = useNavigate();
 
   useEffect(() => {
+    loadUserData();
+  }, []);
+
+  const loadUserData = () => {
     try {
       const currentUser = JSON.parse(localStorage.getItem("currentUser"));
-      if (currentUser && currentUser.name) {
+      if (currentUser) {
         setUserName(currentUser.name);
-        // If user has a saved profile image and it's valid
+        setEditForm({
+          name: currentUser.name || "",
+          location: currentUser.location || "",
+          work: currentUser.work || "",
+          age: currentUser.age || "",
+          description: currentUser.description || ""
+        });
         if (currentUser.profileImage) {
           const img = new Image();
-          img.onerror = () => setProfileImage(defaultProfileImage); // Fallback to default if error
+          img.onerror = () => setProfileImage(defaultProfileImage);
           img.src = currentUser.profileImage;
           if (img.complete) {
             setProfileImage(currentUser.profileImage);
@@ -30,9 +48,9 @@ export default function Profile() {
       }
     } catch (error) {
       console.error("Error reading user data from localStorage:", error);
-      setProfileImage(defaultProfileImage); // Fallback to default if error
+      setProfileImage(defaultProfileImage);
     }
-  }, []);
+  };
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -48,15 +66,40 @@ export default function Profile() {
           }
         } catch (error) {
           console.error("Error saving profile image:", error);
-          setProfileImage(defaultProfileImage); // Fallback to default if error
+          setProfileImage(defaultProfileImage);
         }
       };
       reader.onerror = () => {
         console.error("Error reading file:", file.name);
-        setProfileImage(defaultProfileImage); // Fallback to default if error
+        setProfileImage(defaultProfileImage);
       };
       reader.readAsDataURL(file);
     }
+  };
+
+  const handleEditSubmit = (e) => {
+    e.preventDefault();
+    try {
+      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      const updatedUser = {
+        ...currentUser,
+        ...editForm
+      };
+      localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+      setUserName(editForm.name);
+      setIsEditing(false);
+      loadUserData();
+    } catch (error) {
+      console.error("Error updating user data:", error);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setEditForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
   };
 
   const handleLogout = () => {
@@ -173,21 +216,108 @@ export default function Profile() {
                   </div>
                 </div>
                 <div className="text-center mt-12">
-                  <h3 className="text-4xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
-                    {userName}
-                  </h3>
-                  <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
-                    <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>{" "}
-                    Los Angeles, California
+                  <div className="flex justify-center items-center mb-4">
+                    <h3 className="text-4xl font-semibold leading-normal text-blueGray-700">
+                      {userName}
+                    </h3>
+                    <button
+                      onClick={() => setIsEditing(true)}
+                      className="ml-4 bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition-colors"
+                    >
+                      <i className="fas fa-edit"></i>
+                    </button>
                   </div>
-                  <div className="mb-2 text-blueGray-600 mt-10">
-                    <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
-                    Solution Manager - Creative Tim Officer
-                  </div>
-                  <div className="mb-2 text-blueGray-600">
-                    <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>
-                    University of Computer Science
-                  </div>
+
+                  {!isEditing ? (
+                    <>
+                      <div className="text-sm leading-normal mt-0 mb-2 text-blueGray-400 font-bold uppercase">
+                        <i className="fas fa-map-marker-alt mr-2 text-lg text-blueGray-400"></i>
+                        {editForm.location || "Location"}
+                      </div>
+                      <div className="mb-2 text-blueGray-600 mt-10">
+                        <i className="fas fa-briefcase mr-2 text-lg text-blueGray-400"></i>
+                        {editForm.work || "Work"}
+                      </div>
+                      <div className="mb-2 text-blueGray-600">
+                        <i className="fas fa-university mr-2 text-lg text-blueGray-400"></i>
+                        {editForm.age || "Age"}
+                      </div>
+                    </>
+                  ) : (
+                    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+                      <div className="bg-white rounded-lg p-6 w-full max-w-md">
+                        <h2 className="text-2xl font-bold mb-4">Edit Profile</h2>
+                        <form onSubmit={handleEditSubmit} className="space-y-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700">Name</label>
+                            <input
+                              type="text"
+                              name="name"
+                              value={editForm.name}
+                              onChange={handleInputChange}
+                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700">Location</label>
+                            <input
+                              type="text"
+                              name="location"
+                              value={editForm.location}
+                              onChange={handleInputChange}
+                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700">Work</label>
+                            <input
+                              type="text"
+                              name="work"
+                              value={editForm.work}
+                              onChange={handleInputChange}
+                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700">Age</label>
+                            <input
+                              type="text"
+                              name="age"
+                              value={editForm.age}
+                              onChange={handleInputChange}
+                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700">Description</label>
+                            <textarea
+                              name="description"
+                              value={editForm.description}
+                              onChange={handleInputChange}
+                              rows="3"
+                              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                            ></textarea>
+                          </div>
+                          <div className="flex justify-end space-x-3 mt-4">
+                            <button
+                              type="button"
+                              onClick={() => setIsEditing(false)}
+                              className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 transition-colors"
+                            >
+                              Cancel
+                            </button>
+                            <button
+                              type="submit"
+                              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors"
+                            >
+                              Save Changes
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="mt-6">
                     <button
                       onClick={handleLogout}
@@ -201,19 +331,8 @@ export default function Profile() {
                   <div className="flex flex-wrap justify-center">
                     <div className="w-full lg:w-9/12 px-4">
                       <p className="mb-4 text-lg leading-relaxed text-blueGray-700">
-                        An artist of considerable range, Jenna the name taken by
-                        Melbourne-raised, Brooklyn-based Nick Murphy writes,
-                        performs and records all of his own music, giving it a
-                        warm, intimate feel with a solid groove structure. An
-                        artist of considerable range.
+                        {editForm.description || "Description"}
                       </p>
-                      <a
-                        href="#pablo"
-                        className="font-normal text-lightBlue-500"
-                        onClick={(e) => e.preventDefault()}
-                      >
-                        Show more
-                      </a>
                     </div>
                   </div>
                 </div>
