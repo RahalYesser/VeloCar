@@ -26,6 +26,7 @@ import Car from "./views/Car.js";
 import AdminForum from "./views/admin/Forum.js";
 import Settings from "./views/admin/Settings.js";
 import Orders from "./views/admin/Orders.js";
+import Users from "./views/admin/Users.js";
 
 function App() {
     useEffect(() => {
@@ -64,6 +65,7 @@ function App() {
           <Route path="orders" element={<Orders />} />
           <Route path="contacts" element={<Contacts />} />
           <Route path="cars" element={<Cars />} />
+          <Route path="users" element={<Users />} />
         </Route>
 
       </Routes>

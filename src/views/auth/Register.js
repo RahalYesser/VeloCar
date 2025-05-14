@@ -49,10 +49,17 @@ export default function Register() {
         }
 
         const { confirmPassword, ...userData } = formData;
-        registeredUsers.push(userData);
+        // Add role and id to the user data
+        const newUser = {
+          ...userData,
+          role: 'user',
+          id: Date.now()  // Using timestamp as a simple unique id
+        };
+        
+        registeredUsers.push(newUser);
         localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
 
-        navigate('/');
+        navigate('/auth/login');
       } catch (error) {
         setApiError('Registration failed. Please try again.');
         console.error(error);
