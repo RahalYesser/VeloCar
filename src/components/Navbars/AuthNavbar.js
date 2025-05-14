@@ -18,10 +18,10 @@ export default function Navbar(props) {
               to="/"
             >
               <img
-                    alt="velocar"
-                    src={require("./../../assets/img/logo.png")}
-                    className="h-28 w-auto"
-                  />
+                alt="velocar"
+                src={require("./../../assets/img/logo.png")}
+                className="h-28 w-auto"
+              />
             </Link>
             <button
               className="cursor-pointer text-xl leading-none px-3 py-1 border border-solid border-transparent rounded bg-transparent block lg:hidden outline-none focus:outline-none"
@@ -38,42 +38,46 @@ export default function Navbar(props) {
             }
             id="example-navbar-warning"
           >
-           
             <ul className="flex flex-col lg:flex-row list-none lg:ml-auto">
-              <li className="flex items-center">
+              {/* <li className="flex items-center">
                 <PagesDropdown />
-              </li>
+              </li> */}
               <li className="flex items-center">
-                <a
-                  className="lg:text-white lg:hover:text-blueGray-200 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
-                  href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdemos.creative-tim.com%2Fnotus-react%2F%23%2F"
-                  target="_blank"
+                <Link
+                  to="/new"
+                  className={`px-3 py-4 lg:py-2 flex items-center text-base uppercase font-bold ${
+                    location.pathname === "/new"
+                      ? "text-red-500"
+                      : "text-white hover:text-red-500"
+                  }`}
                 >
-                  <i className="lg:text-blueGray-200 text-blueGray-400 fab fa-facebook text-lg leading-lg " />
-                  <span className="lg:hidden inline-block ml-2">Share</span>
-                </a>
-              </li>
-
-              <li className="flex items-center">
-                <a
-                  className="lg:text-white lg:hover:text-blueGray-200 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
-                  href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fdemos.creative-tim.com%2Fnotus-react%2F%23%2F&text=Start%20your%20development%20with%20a%20Free%20Tailwind%20CSS%20and%20React%20UI%20Kit%20and%20Admin.%20Let%20Notus%20React%20amaze%20you%20with%20its%20cool%20features%20and%20build%20tools%20and%20get%20your%20project%20to%20a%20whole%20new%20level.%20"
-                  target="_blank"
-                >
-                  <i className="lg:text-blueGray-200 text-blueGray-400 fab fa-twitter text-lg leading-lg " />
-                  <span className="lg:hidden inline-block ml-2">Tweet</span>
-                </a>
+                  New
+                </Link>
               </li>
 
               <li className="flex items-center">
-                <a
-                  className="lg:text-white lg:hover:text-blueGray-200 text-blueGray-700 px-3 py-4 lg:py-2 flex items-center text-xs uppercase font-bold"
-                  href="https://github.com/creativetimofficial/notus-react?ref=nr-auth-navbar"
-                  target="_blank"
+                <Link
+                  to="/used"
+                  className={`px-3 py-4 lg:py-2 flex items-center text-base uppercase font-bold ${
+                    location.pathname === "/used"
+                      ? "text-red-500"
+                      : "text-white hover:text-red-500"
+                  }`}
                 >
-                  <i className="lg:text-blueGray-200 text-blueGray-400 fab fa-github text-lg leading-lg " />
-                  <span className="lg:hidden inline-block ml-2">Star</span>
-                </a>
+                  Used Cars
+                </Link>
+              </li>
+              <li className="flex items-center">
+                <Link
+                  to="/forum"
+                  className={`px-3 py-4 lg:py-2 flex items-center text-base uppercase font-bold ${
+                    location.pathname === "/forum"
+                      ? "text-red-500"
+                      : "text-white hover:text-red-500"
+                  }`}
+                >
+                  Forum
+                </Link>
               </li>
 
               <li className="flex items-center">
@@ -82,9 +86,9 @@ export default function Navbar(props) {
                   type="button"
                 >
                   <span className="flex items-center gap-2">
-  <span className="inline-block w-3 h-3 bg-green-500 rounded-full"></span>
-  <span className="text-sm text-gray-700">Active</span>
-</span>
+                    <span className="inline-block w-3 h-3 bg-green-500 rounded-full"></span>
+                    <span className="text-sm text-gray-700">Active</span>
+                  </span>
                 </button>
               </li>
             </ul>

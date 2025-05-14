@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 //import CardCategoriesFilter from "../components/Cards/CardCategoriesFilter.js";
@@ -10,7 +10,10 @@ import Footer from "../components/Footers/Footer.js";
 import IndexNavbar from "../components/Navbars/IndexNavbar.js";
 import carBrands from "../data/carBrands";
 import CarBrandCard from "../components/Cards/CardCarBrands.js";
-
+import { initCars } from "../data/initCars.js";
+import { initForum } from "../data/initForum.js";
+import { initFeedbacks } from "../data/initFeedbacks.js";  
+import { initCarCategories } from "../data/initCarCategories.js"; 
 import cars from "../assets/img/cars.jpg";
 
 export default function Landing() {
@@ -31,6 +34,13 @@ export default function Landing() {
     alert("Message send !");
     setFormData({ fullName: "", email: "", message: "" });
   };
+
+  useEffect(() => {
+      initCars();
+      initCarCategories();
+      initForum();
+      initFeedbacks();
+    }, []);
   return (
     <>
       <IndexNavbar fixed />
