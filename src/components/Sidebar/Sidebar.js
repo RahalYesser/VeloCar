@@ -10,7 +10,8 @@ export default function Sidebar() {
   const [collapseShow, setCollapseShow] = React.useState("hidden");
 
   // Helper to check active link
-  const isActive = (path) => location.pathname.includes(path);
+  const isActive = (path) => location.pathname === path;
+
 
   return (
     <>
@@ -117,7 +118,7 @@ export default function Sidebar() {
                 </Link>
               </li>
 
-              <li className="items-center">
+            {/*   <li className="items-center">
                 <Link
                   className={`text-xs uppercase py-3 font-bold block ${
                     isActive("/admin/settings")
@@ -135,27 +136,9 @@ export default function Sidebar() {
                   ></i>
                   Settings
                 </Link>
-              </li>
-
-              {/* <li className="items-center">
-                <Link
-                  className={`text-xs uppercase py-3 font-bold block ${
-                    isActive("/admin/tables")
-                      ? "text-lightBlue-500 hover:text-lightBlue-600"
-                      : "text-blueGray-700 hover:text-blueGray-500"
-                  }`}
-                  to="/admin/tables"
-                >
-                  <i
-                    className={`fas fa-table mr-2 text-sm ${
-                      isActive("/admin/tables")
-                        ? "opacity-75"
-                        : "text-blueGray-300"
-                    }`}
-                  ></i>
-                  Tables
-                </Link>
               </li> */}
+
+  
 
               <li className="items-center">
                 <Link
@@ -195,7 +178,26 @@ export default function Sidebar() {
                   Cars
                 </Link>
               </li>
-              <li className="items-center">
+               <li className="items-center">
+                <Link
+                  className={`text-xs uppercase py-3 font-bold block ${
+                    isActive("/admin/carsCategories")
+                      ? "text-lightBlue-500 hover:text-lightBlue-600"
+                      : "text-blueGray-700 hover:text-blueGray-500"
+                  }`}
+                  to="/admin/carsCategories"
+                >
+                  <i
+                    className={`fa-solid fa-layer-group mr-2 text-sm ${
+                      isActive("/admin/carsCategories")
+                        ? "opacity-75"
+                        : "text-blueGray-300"
+                    }`}
+                  ></i>
+                  Cars Categories
+                </Link>
+              </li>
+             {/*  <li className="items-center">
                 <Link
                   className={`text-xs uppercase py-3 font-bold block ${
                     isActive("/admin/feedbacks")
@@ -214,7 +216,7 @@ export default function Sidebar() {
                   Cars feedbacks
                 </Link>
         
-              </li>
+              </li> */}
               <li className="items-center">
                 <Link
                   className={`text-xs uppercase py-3 font-bold block ${

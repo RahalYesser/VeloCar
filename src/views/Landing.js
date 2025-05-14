@@ -15,6 +15,7 @@ import { initForum } from "../data/initForum.js";
 import { initFeedbacks } from "../data/initFeedbacks.js";  
 import { initCarCategories } from "../data/initCarCategories.js"; 
 import cars from "../assets/img/cars.jpg";
+import { initCarBrands } from "../data/initCarBrands.js";
 
 export default function Landing() {
   const [formData, setFormData] = useState({
@@ -36,6 +37,7 @@ export default function Landing() {
   };
 
   useEffect(() => {
+      initCarBrands();
       initCars();
       initCarCategories();
       initForum();
