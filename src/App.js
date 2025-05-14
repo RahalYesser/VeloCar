@@ -1,28 +1,15 @@
-import React from "react";
+import { useEffect } from "react";
 import "./index.css";
 import {
   BrowserRouter as Router,
   Route,
   Routes,
-  Link,
   Navigate,
 } from "react-router-dom";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import "./assets/styles/tailwind.css";
 
-// Pages existantes
-//import Login from './pages/Login';
-//import Register from './pages/Register';
-//import Profile from './pages/Profile';
-
-// Nouvelles pages
-import ContactPage from "./pages/ContactPage";
-import AdminPage from "./pages/AdminPage";
-import FeedbackPage from "./pages/FeedbackPage";
-import AdminFeedbackPage from "./pages/AdminFeedbackPage";
-//import Dashboard from "./views/Index";
 import Landing from "./views/Landing.js";
-// views
 import Login from "./views/auth/Login.js";
 import Register from "./views/auth/Register.js";
 import Profile from "./views/Profile.js";
@@ -31,28 +18,32 @@ import Used from "./views/Used.js";
 import Forum from "./views/Forum.js";
 import Admin from "./layouts/Admin.js";
 import Auth from "./layouts/Auth.js";
-import Index from "./views/Index";
 import Dashboard from "./views/admin/Dashboard.js";
 import Contacts from "./views/admin/Contacts.js";
+import Feedbacks from "./views/admin/Feedbacks.js";
+import Cars from "./views/admin/Cars.js";
+import Car from "./views/Car.js";
 import AdminForum from "./views/admin/Forum.js";
 import Settings from "./views/admin/Settings.js";
-import Tables from "./views/admin/Tables.js";
+import Orders from "./views/admin/Orders.js";
 
 function App() {
+    useEffect(() => {
+    // Remove currentUser from localStorage when the window is closed
+    const handleUnload = () => {
+      localStorage.removeItem("currentUser");
+    };
+
+    // Event listener for unloading the window (i.e., closing the tab/window)
+    window.addEventListener("unload", handleUnload);
+
+    // Clean up event listener when the component is unmounted
+    return () => {
+      window.removeEventListener("unload", handleUnload);
+    };
+  }, []);
   return (
     <Router>
-      {/* Simple menu de navigation 
-      <nav className="bg-blue-600 text-white p-4 flex gap-4">
-        <Link to="/">Login</Link>
-        <Link to="/register">Register</Link>
-        <Link to="/profile">Profile</Link>
-        <Link to="/contact">Contact</Link>
-        <Link to="/admin">Admin</Link>
-        <Link to="/feedback">Feedback</Link> 
-        <Link to="/admin-feedbacks">Admin Feedbacks</Link>
-      </nav>*/}
-
-      {/* Routes */}
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/new" element={<New />} />
@@ -63,25 +54,18 @@ function App() {
         <Route path="/auth" element={<Auth />} />
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/car/:id" element={<Car />} />
         <Route path="/admin" element={<Admin />}>
           <Route index element={<Navigate to="/admin/dashboard" replace />} />
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="settings" element={<Settings />} />
           <Route path="forum" element={<AdminForum />} />
+          <Route path="feedbacks" element={<Feedbacks />} />
+          <Route path="orders" element={<Orders />} />
           <Route path="contacts" element={<Contacts />} />
-          <Route path="tables" element={<Tables />} />
+          <Route path="cars" element={<Cars />} />
         </Route>
 
-        
-        <Route path="/contact" element={<ContactPage />} />
-        {/*<Route path="/admin" element={<AdminPage />} />*/}
-        <Route path="/feedback" element={<FeedbackPage />} />
-        <Route path="/admin-feedbacks" element={<AdminFeedbackPage />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/home" element={<Index />} />
-
-        {/*         <Route path="/admin/forum" element={<AdminForum/>} />
-        <Route path="/admin/tables" element={<Tables />} />*/}
       </Routes>
     </Router>
   );

@@ -19,7 +19,7 @@ export default function Auth() {
             className="absolute top-0 w-full h-full bg-blueGray-800 bg-no-repeat bg-full"
             style={{
               backgroundImage:
-                `url(${require("../assets/img/register_bg_2.png").default})`,
+                `url(${require("../assets/img/register_bg_2.png")})`,
             }}
           ></div>
           {/* <Routes>
