@@ -41,7 +41,7 @@ export default function Users() {
         <div className="flex flex-wrap items-center">
           <div className="relative w-full px-4 flex-grow flex-1">
             <h3 className="font-semibold text-base text-blueGray-700">
-              Manage Contacts
+              Manage Users
             </h3>
           </div>
         </div>

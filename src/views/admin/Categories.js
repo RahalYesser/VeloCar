@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 
 const CarCategories = () => {
   const [brands, setBrands] = useState([]);
-  const [carCategories, setCarCategories] = useState([]);
+  const [carCategories, setCarCategories] = useState({ marques: [], models: {}, types: [] });
   const [brandData, setBrandData] = useState({ name: "", image: "" });
   const [modelData, setModelData] = useState({ marque: "", newModel: "" });
   const [editingBrand, setEditingBrand] = useState(null);
@@ -11,14 +11,27 @@ const CarCategories = () => {
   const brandsPerPage = 5;
 
   useEffect(() => {
-    const storedBrands = JSON.parse(localStorage.getItem("carBrands")) || [];
-    setBrands(storedBrands);
+    try {
+      // Initialize localStorage if needed
+      if (!localStorage.getItem("carBrands")) {
+        localStorage.setItem("carBrands", JSON.stringify([]));
+      }
 
-    const storedCategories = JSON.parse(localStorage.getItem("carCategories"));
-    if (Array.isArray(storedCategories)) {
+      // Load brands
+      const storedBrands = JSON.parse(localStorage.getItem("carBrands")) || [];
+      setBrands(storedBrands);
+
+      // Load categories
+      const storedCategories = JSON.parse(localStorage.getItem("carCategories")) || {
+        marques: [],
+        models: {},
+        types: []
+      };
       setCarCategories(storedCategories);
-    } else {
-      setCarCategories([]);
+    } catch (error) {
+      console.error("Error loading data:", error);
+      setBrands([]);
+      setCarCategories({ marques: [], models: {}, types: [] });
     }
   }, []);
 
@@ -31,26 +44,47 @@ const CarCategories = () => {
     if (!brandData.name || !brandData.image) return;
 
     if (editingBrand) {
+      // Update brand
       const updatedBrands = brands.map((b) =>
         b.id === editingBrand.id ? { ...editingBrand, ...brandData } : b
       );
       setBrands(updatedBrands);
       localStorage.setItem("carBrands", JSON.stringify(updatedBrands));
+
+      // Update category name if changed
+      if (editingBrand.name !== brandData.name) {
+        const updatedCategories = {
+          ...carCategories,
+          marques: carCategories.marques.map(m => 
+            m === editingBrand.name ? brandData.name : m
+          ),
+          models: {
+            ...carCategories.models,
+            [brandData.name]: carCategories.models[editingBrand.name] || [],
+          }
+        };
+        delete updatedCategories.models[editingBrand.name];
+        setCarCategories(updatedCategories);
+        localStorage.setItem("carCategories", JSON.stringify(updatedCategories));
+      }
     } else {
+      // Add new brand
       const newBrand = { ...brandData, id: uuidv4() };
       const updatedBrands = [...brands, newBrand];
       setBrands(updatedBrands);
       localStorage.setItem("carBrands", JSON.stringify(updatedBrands));
 
-      const exists = carCategories.find((cat) => cat.marque === newBrand.name);
-      if (!exists) {
-        const updatedCategories = [
-          ...carCategories,
-          { marque: newBrand.name, models: [], type: "" },
-        ];
-        setCarCategories(updatedCategories);
-        localStorage.setItem("carCategories", JSON.stringify(updatedCategories));
-      }
+      // Add to categories
+      const updatedCategories = {
+        ...carCategories,
+        marques: [...carCategories.marques, newBrand.name],
+        models: {
+          ...carCategories.models,
+          [newBrand.name]: []
+        }
+      };
+      setCarCategories(updatedCategories);
+      localStorage.setItem("carCategories", JSON.stringify(updatedCategories));
     }
 
     setBrandData({ name: "", image: "" });
@@ -68,10 +102,13 @@ const CarCategories = () => {
     setBrands(updatedBrands);
     localStorage.setItem("carBrands", JSON.stringify(updatedBrands));
 
-    // Also remove from categories
-    const updatedCategories = carCategories.filter(
-      (cat) => cat.marque !== brandToDelete.name
-    );
+    // Remove from categories
+    const { [brandToDelete.name]: deletedModels, ...remainingModels } = carCategories.models;
+    const updatedCategories = {
+      ...carCategories,
+      marques: carCategories.marques.filter(m => m !== brandToDelete.name),
+      models: remainingModels
+    };
     setCarCategories(updatedCategories);
     localStorage.setItem("carCategories", JSON.stringify(updatedCategories));
   };
@@ -82,28 +119,29 @@ const CarCategories = () => {
   const handleAddModel = () => {
     if (!modelData.marque || !modelData.newModel) return;
 
-    const updatedCategories = carCategories.map((cat) =>
-      cat.marque === modelData.marque
-        ? {
-            ...cat,
-            models: [...new Set([...(cat.models || []), modelData.newModel])],
-          }
-        : cat
-    );
+    const updatedCategories = {
+      ...carCategories,
+      models: {
+        ...carCategories.models,
+        [modelData.marque]: [
+          ...(carCategories.models[modelData.marque] || []),
+          modelData.newModel
+        ]
+      }
+    };
     setCarCategories(updatedCategories);
     localStorage.setItem("carCategories", JSON.stringify(updatedCategories));
     setModelData({ ...modelData, newModel: "" });
   };
 
   const handleDeleteModel = (marque, model) => {
-    const updatedCategories = carCategories.map((cat) =>
-      cat.marque === marque
-        ? {
-            ...cat,
-            models: (cat.models || []).filter((m) => m !== model),
-          }
-        : cat
-    );
+    const updatedCategories = {
+      ...carCategories,
+      models: {
+        ...carCategories.models,
+        [marque]: carCategories.models[marque].filter(m => m !== model)
+      }
+    };
     setCarCategories(updatedCategories);
     localStorage.setItem("carCategories", JSON.stringify(updatedCategories));
   };
@@ -112,6 +150,40 @@ const CarCategories = () => {
   const indexOfLastBrand = currentPage * brandsPerPage;
   const indexOfFirstBrand = indexOfLastBrand - brandsPerPage;
   const currentBrands = brands.slice(indexOfFirstBrand, indexOfLastBrand);
+
+  const ModelsTable = () => (
+    <div className="overflow-x-auto p-4">
+      <h3 className="text-md font-semibold mb-2 text-blueGray-600">Models</h3>
+      <table className="w-full text-sm border-collapse">
+        <thead>
+          <tr className="bg-blueGray-100 text-blueGray-500 uppercase text-xs font-semibold border-b">
+            <th className="px-6 py-3 text-left">Brand</th>
+            <th className="px-6 py-3 text-left">Models</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Object.entries(carCategories.models || {}).map(([marque, models]) => (
+            <tr key={marque} className="border-t">
+              <td className="px-6 py-3">{marque}</td>
+              <td className="px-6 py-3">
+                {models.map((model, idx) => (
+                  <div key={idx} className="flex justify-between items-center">
+                    <span>{model}</span>
+                    <button
+                      onClick={() => handleDeleteModel(marque, model)}
+                      className="text-red-600 text-xs hover:text-red-800 ml-2"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                ))}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 
   return (
     <div className="relative flex flex-col break-words bg-white w-full mb-6 shadow-lg rounded">
@@ -185,9 +257,9 @@ const CarCategories = () => {
           className="p-2 rounded border border-gray-300 text-sm"
         >
           <option value="">Select Brand</option>
-          {carCategories.map((cat, idx) => (
-            <option key={idx} value={cat.marque}>
-              {cat.marque}
+          {carCategories.marques.map((marque, idx) => (
+            <option key={idx} value={marque}>
+              {marque}
             </option>
           ))}
         </select>
@@ -275,46 +347,7 @@ const CarCategories = () => {
       </div>
 
       {/* Models Table */}
-      <div className="overflow-x-auto p-4">
-        <h3 className="text-md font-semibold mb-2 text-blueGray-600">Models</h3>
-        <table className="w-full text-sm border-collapse">
-          <thead>
-            <tr className="bg-blueGray-100 text-blueGray-500 uppercase text-xs font-semibold border-b">
-              <th className="px-6 py-3 text-left">Brand</th>
-              <th className="px-6 py-3 text-left">Models</th>
-            </tr>
-          </thead>
-          <tbody>
-            {carCategories.map((cat, index) => (
-              <tr key={index} className="border-t">
-                <td className="px-6 py-3">{cat.marque}</td>
-                <td className="px-6 py-3">
-                  {(cat.models || []).map((model, idx) => (
-                    <div key={idx} className="flex justify-between items-center">
-                      <span>{model}</span>
-                      <button
-                        onClick={() => handleDeleteModel(cat.marque, model)}
-                        className="text-red-600 text-xs hover:text-red-800 ml-2"
-                      >
-                        Delete
-                      </button>
-                    </div>
-                  ))}
-                </td>
-              </tr>
-            ))}
-            {carCategories.length === 0 && (
-              <tr>
-                <td colSpan="2" className="text-center py-4 text-blueGray-400">
-                  No models found.
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
-      </div>
-
-     
+      <ModelsTable />
     </div>
   );
 };
