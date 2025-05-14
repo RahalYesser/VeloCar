@@ -12,6 +12,7 @@ export default function Profile() {
   const [profileImage, setProfileImage] = useState(defaultProfileImage);
   const [isHovering, setIsHovering] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [editForm, setEditForm] = useState({
     name: "",
     location: "",
@@ -30,6 +31,7 @@ export default function Profile() {
       const currentUser = JSON.parse(localStorage.getItem("currentUser"));
       if (currentUser) {
         setUserName(currentUser.name);
+        setIsAdmin(currentUser.role === 'admin');
         setEditForm({
           name: currentUser.name || "",
           location: currentUser.location || "",
@@ -318,7 +320,15 @@ export default function Profile() {
                     </div>
                   )}
 
-                  <div className="mt-6">
+                  <div className="mt-6 space-y-4">
+                    {isAdmin && (
+                      <button
+                        onClick={() => navigate('/admin/dashboard')}
+                        className="bg-blue-500 text-white font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-2 ease-linear transition-all duration-150"
+                      >
+                        Go to Admin Dashboard
+                      </button>
+                    )}
                     <button
                       onClick={handleLogout}
                       className="bg-red-500 text-white font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150"

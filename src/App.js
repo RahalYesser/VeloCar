@@ -28,9 +28,14 @@ import Settings from "./views/admin/Settings.js";
 import Orders from "./views/admin/Orders.js";
 import Users from "./views/admin/Users.js";
 import AdminCategories from "./views/admin/Categories.js";
+import AdminGuard from "./components/Guards/AdminGuard";
+import { initAdmin } from "./data/initAdmin.js";
 
 function App() {
   useEffect(() => {
+    // Initialize admin user
+    initAdmin();
+
     // Remove currentUser from localStorage when the window is closed
     const handleUnload = () => {
       localStorage.removeItem("currentUser");
@@ -57,18 +62,19 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/car/:id" element={<Car />} />
-        <Route path="/admin" element={<Admin />}>
-          <Route index element={<Navigate to="/admin/dashboard" replace />} />
-          <Route path="dashboard" element={<Dashboard />} />
-          <Route path="settings" element={<Settings />} />
-          <Route path="forum" element={<AdminForum />} />
-          <Route path="feedbacks" element={<Feedbacks />} />
-          <Route path="orders" element={<Orders />} />
-          <Route path="contacts" element={<Contacts />} />
-          <Route path="carsCategories" element={<AdminCategories />} />
-
-          <Route path="cars" element={<Cars />} />
-          <Route path="users" element={<Users />} />
+        <Route element={<AdminGuard />}>
+          <Route path="/admin" element={<Admin />}>
+            <Route index element={<Navigate to="/admin/dashboard" replace />} />
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="settings" element={<Settings />} />
+            <Route path="forum" element={<AdminForum />} />
+            <Route path="feedbacks" element={<Feedbacks />} />
+            <Route path="orders" element={<Orders />} />
+            <Route path="contacts" element={<Contacts />} />
+            <Route path="carsCategories" element={<AdminCategories />} />
+            <Route path="cars" element={<Cars />} />
+            <Route path="users" element={<Users />} />
+          </Route>
         </Route>
       </Routes>
     </Router>
